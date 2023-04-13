@@ -9,7 +9,7 @@ def create_windows(data, labels, window_size):
         windows = []
         for i in range(0, len(data)):
             if i + window_size < len(data):
-                windows.append((data[i:i+window_size], labels[i:i+window_size]))
+                windows.append((data[i:i+window_size], labels[i+window_size]))
         return windows
     else:
         windows = []

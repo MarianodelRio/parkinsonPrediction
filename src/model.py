@@ -31,6 +31,7 @@ class LSTMmodel(pl.LightningModule):
         y_hat = self(x)
         if self.hparams.loss == 'mse':
             loss = torch.nn.functional.mse_loss(y_hat, y)
+        else:
             raise ValueError('Loss function not recognized')
         self.log('train_loss', loss)
         return loss

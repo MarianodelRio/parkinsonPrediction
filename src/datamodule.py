@@ -22,7 +22,7 @@ class DataModule(pl.LightningDataModule):
         self.path_dataset = path_dataset
     
     def setup(self, stage=None):
-        data, labels = transform_data('data/train_clinical_data.csv')
+        data, labels = transform_data(self.path_dataset)
         dataset = Dataset(data, labels, window_size=10)
 
         self.train, self.test = train_test_split(dataset, test_size=0.2, random_state=42)

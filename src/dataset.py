@@ -22,12 +22,12 @@ class Dataset(Dataset):
     def __getitem__(self, ix):
         if self.labels is not None:
             data, label = self.windows[ix]
-            data = torch.from_numpy(data)
-            label = torch.from_numpy(label)
+            data = torch.from_numpy(data).float()
+            label = torch.from_numpy(label).float()
             return data, label
         else:
             data = self.windows[ix]
-            data = torch.from_numpy(data)
+            data = torch.from_numpy(data).float()
             return data
 
 
