@@ -56,3 +56,11 @@ def extract_test_data(dm):
     return test_data, test_label
 
     
+
+def get_patient_visits(patient_id, train_clinical_data, suplemental_clinical_data):
+    '''Get the last 10 visits of a patient'''
+    patient_visits = train_clinical_data[train_clinical_data['patient_id'] == patient_id]
+    patient_visits = pd.concat([patient_visits,(suplemental_clinical_data[suplemental_clinical_data['patient_id'] == patient_id])])
+    patient_visits = patient_visits.sort_values(by=['visit_month'])
+    patient_visits = patient_visits.tail(10)
+    return patient_visits
