@@ -37,8 +37,22 @@ def transform_data(url):
     labels = np.array([data['updrs_1'], data['updrs_2'], data['updrs_3'], data['updrs_4']])
     data = data.drop(['updrs_1'], axis=1)
     data = fill_missing_values(data)
+    labels = fill_missing_values(pd.DataFrame(labels.T)).to_numpy()
     data = data.to_numpy()
     labels = labels.reshape(-1, 4)
     data[:, -1] = data[:, -1] == 'OFF' 
     data = data.astype(np.float32)
     return data, labels
+
+
+def smape_metric(y_true, y_pred):
+    '''Calculate the symmetric mean absolute percentage error'''
+    return 100 * np.mean(np.abs(y_true - y_pred) / ((np.abs(y_true) + np.abs(y_pred)) / 2))
+
+def extract_test_data(dm):
+    '''Extract the test data and labels from the datamodule'''
+    test_data = np.array([ sample[0].numpy() for sample in dm.val_dataloader().dataset])
+    test_label = np.array([ sample[1].numpy() for sample in dm.val_dataloader().dataset])
+    return test_data, test_label
+
+    

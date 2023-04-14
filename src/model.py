@@ -5,6 +5,7 @@ The model architecture is defined as a LSTM layer and a linear layer.
 
 import pytorch_lightning as pl
 import torch
+import numpy as np
 
 class LSTMmodel(pl.LightningModule):
     def __init__(self, hparams=None, num_ratios=4):
@@ -16,12 +17,14 @@ class LSTMmodel(pl.LightningModule):
 
     def forward(self, x):
         x, _ = self.lstm(x) # Second element is the hidden state
-        x = x[-1, :] # Take the last output
+        x = x[:,-1, :] # Take the last output
         x = self.linear(x)
         return x 
 
     def predict(self, x):
         self.eval()
+        if type(x) == np.ndarray:
+            x = torch.from_numpy(x).float()
         with torch.no_grad():
             return self.forward(x)
         
