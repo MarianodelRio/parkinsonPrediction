@@ -8,17 +8,18 @@ import torch
 import numpy as np
 
 class LSTMmodel(pl.LightningModule):
-    def __init__(self, hparams=None, num_ratios=4):
+    def __init__(self, hparams=None, num_ratios=4, prediction_time=4):
         super().__init__()
         self.save_hyperparameters(hparams)
         # Initialize model
-        self.lstm = torch.nn.LSTM(input_size=7, hidden_size=128, num_layers=1, batch_first=True)
-        self.linear = torch.nn.Linear(128, num_ratios)
+        self.lstm = torch.nn.LSTM(input_size=8, hidden_size=128, num_layers=1, batch_first=True)
+        self.linear = torch.nn.Linear(128, num_ratios * prediction_time)
 
     def forward(self, x):
         x, _ = self.lstm(x) # Second element is the hidden state
         x = x[:,-1, :] # Take the last output
         x = self.linear(x)
+        x = x.view(-1, 4, 4)
         return x 
 
     def predict(self, x):

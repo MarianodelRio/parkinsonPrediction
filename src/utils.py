@@ -79,7 +79,7 @@ def extract_test_data(dm):
 
     
 
-def get_patient_visits(patient_id, train_clinical_url, suplemental_clinical_url, peptides_url, proteins_url):
+def get_patient_visits(patient_id, train_clinical_url, suplemental_clinical_url, peptides_url=None, proteins_url=None):
     '''Get the last 10 visits of a patient'''
     patient_visits = read_clean_data(train_clinical_url, suplemental_clinical_url, peptides_url, proteins_url)
     patient_visits = patient_visits[patient_visits['patient_id'] == patient_id] 
