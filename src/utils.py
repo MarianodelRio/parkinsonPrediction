@@ -6,28 +6,30 @@ import numpy as np
 def create_windows_patient(data, window_size, prediction_time):
     '''Create windows of the data and labels for each patient. 
     Prediction time indicate number of predictions (6 months, 12 months, ...)'''
-    windows = []
+    data_windows = []
+    label_windows = []
     for i in range(0, len(data)):
         if i + window_size < len(data):
+            data_windows.append(data[i:i+window_size-prediction_time])
             labels = data[i+window_size - prediction_time : i+window_size, 3:7]
-            windows.append([data[i:i+window_size-prediction_time], labels])
+            label_windows.append(labels)
     
-    windows = np.array(windows)
-    print(windows.shape)
-    return windows[:, 0], windows[:,1]
+    return np.array(data_windows), np.array(label_windows)
 
 def create_windows(data, window_size, prediction_time):
     '''Create windows of the data and labels'''
     patients = np.unique(data[:, 1])
-    windows = []
+    # Initialize a numpy array without shape
+    data_windows =  []
+    label_windows = []
+
     for patient in patients:
         patient_data = data[data[:, 1] == patient]
         patient_data, patient_labels = create_windows_patient(patient_data, window_size, prediction_time)
-        print(patient_data, patient_labels)
-        windows.append([patient_data, patient_labels])
+        data_windows.extend(patient_data)
+        label_windows.extend(patient_labels)
     
-    windows = np.array(windows)
-    return windows[:,0], windows[:, 1]
+    return np.array(data_windows), np.array(label_windows)
     
 
 def fill_missing_values(data):

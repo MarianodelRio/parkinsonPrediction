@@ -11,7 +11,6 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 
 from src.dataset import Dataset
-from src.utils import transform_data
 
 class DataModule(pl.LightningDataModule):
     
