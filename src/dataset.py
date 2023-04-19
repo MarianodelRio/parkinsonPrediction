@@ -9,15 +9,15 @@ from src.utils import create_windows
 
 class Dataset(Dataset):
 
-    def __init__(self, data, labels=None, window_size=10):
+    def __init__(self, data, window_size=10):
         super().__init__()
         self.data = data
-        self.labels = labels
         self.window_size = window_size
-        self.windows = create_windows(self.data, self.labels, self.window_size)
+        self.windows = create_windows(self.data, self.window_size)
+        #print(self.windows.shape)
     
     def __len__(self):
-        return len(self.windows)
+        return 0 #len(self.windows)
     
     def __getitem__(self, ix):
         if self.labels is not None:
