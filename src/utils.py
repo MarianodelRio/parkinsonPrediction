@@ -78,7 +78,6 @@ def extract_test_data(dm):
     return test_data, test_label
 
     
-
 def get_patient_visits(patient_id, train_clinical_url, suplemental_clinical_url):
     '''Get the last 10 visits of a patient'''
     patient_visits = read_clean_data(train_clinical_url, suplemental_clinical_url=suplemental_clinical_url)
@@ -86,3 +85,30 @@ def get_patient_visits(patient_id, train_clinical_url, suplemental_clinical_url)
     patient_visits = patient_visits.tail(10)
     patient_visits = transform_dataframe_to_numpy(patient_visits)
     return patient_visits
+
+def make_predictions(test, model, train_url, sup_url, sample_prediction_df):
+    for index, row in test.iterrows():
+        # Get patient id
+        patient_id = row['patient_id']
+        # Get group key
+        group_key = int(row['visit_id'][-1])
+        # Get updrs test 
+        updrs_test = row['updrs_test']
+        # Get last visits
+        last_visits = get_patient_visits(patient_id, train_url, sup_url)
+        last_visits = last_visits.unsqueeze(0)
+        # Get prediction
+        pred = model.predict(last_visits)
+        # Build prediction id (patient_id + group_key + updrs_test + months) 3342_0_updrs_1_plus_0_months
+        pred_id0 = str(patient_id) + '_' + str(group_key) + '_' + str(updrs_test) + '_plus_0_months'
+        pred_id1 = str(patient_id) + '_' + str(group_key) + '_' + str(updrs_test) + '_plus_6_months'
+        pred_id2 = str(patient_id) + '_' + str(group_key) + '_' + str(updrs_test) + '_plus_12_months' 
+        pred_id3 = str(patient_id) + '_' + str(group_key) + '_' + str(updrs_test) + '_plus_24_months' 
+
+        # Append prediction to dataframe (prediction_id,rating,group_key)
+        sample_prediction_df = sample_prediction_df.append({'prediction_id': pred_id0, 'rating': pred[0], 'group_key': group_key}, ignore_index=True)
+        sample_prediction_df = sample_prediction_df.append({'prediction_id': pred_id1, 'rating': pred[1], 'group_key': group_key}, ignore_index=True)
+        sample_prediction_df = sample_prediction_df.append({'prediction_id': pred_id2, 'rating': pred[2], 'group_key': group_key}, ignore_index=True)
+        sample_prediction_df = sample_prediction_df.append({'prediction_id': pred_id3, 'rating': pred[3], 'group_key': group_key}, ignore_index=True)
+    
+    return sample_prediction_df
