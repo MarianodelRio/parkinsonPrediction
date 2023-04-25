@@ -33,6 +33,10 @@ class DataModule(pl.LightningDataModule):
         data = read_clean_data(self.path_clinical_data, self.path_supplemental_data, 
                                self.path_peptides, self.path_proteins)
         data = transform_dataframe_to_numpy(data)
+
+        # Scaling data 
+        data = (data - data.mean(axis=0)) / data.std(axis=0)
+
         dataset = Dataset(data, window_size=self.window_size, prediction_time=self.prediction_time)
 
         self.train, self.test = train_test_split(dataset, test_size=0.2, random_state=42)
