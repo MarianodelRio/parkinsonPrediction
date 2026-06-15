@@ -3,7 +3,6 @@
 [![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-Lightning-orange)](https://lightning.ai/)
 [![Kaggle](https://img.shields.io/badge/Kaggle-Competition-20BEFF)](https://www.kaggle.com/competitions/amp-parkinsons-disease-progression-prediction)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 LSTM-based model to predict the progression of Parkinson's Disease from protein biomarkers and clinical data. Developed as a solution for the [AMP-PD Parkinson's Disease Progression Prediction](https://www.kaggle.com/competitions/amp-parkinsons-disease-progression-prediction) Kaggle competition.
 
