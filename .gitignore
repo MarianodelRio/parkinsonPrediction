@@ -127,3 +127,23 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# PyTorch / Lightning
+lightning_logs/
+*.ckpt
+*.pt
+*.pth
+wandb/
+
+# Large data files (download from Kaggle)
+data/train_peptides.csv
+data/train_proteins.csv
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
